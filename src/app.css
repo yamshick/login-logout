@@ -1,0 +1,9 @@
+.app {
+  font-size: xx-large;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
