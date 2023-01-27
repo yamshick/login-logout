@@ -4,6 +4,7 @@ import { httpService } from "../../service/http-service";
 
 const initialState = {
   isAuth: false,
+  userName: null,
 };
 
 export const loginThunk = createAsyncThunk(
@@ -11,7 +12,7 @@ export const loginThunk = createAsyncThunk(
   async ({ login, password }) => {
     const response = await httpService.post(LOGIN, { login, password });
     console.log(response);
-    return response.data;
+    return response;
   }
 );
 
@@ -30,7 +31,14 @@ export const registerThunk = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setIsAuth(state, action) {
+      state.isAuth = action.payload;
+    },
+    setUserName(state, action) {
+      state.userName = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       console.log(action);

@@ -22,13 +22,29 @@ app.post("/login", function (req, res) {
     res.end(JSON.stringify({ name: isLoggedInUser.name }));
     isLoggedInUser = null;
   } else {
-    res.send("POST request to the register");
+    res.send("POST request to the login");
   }
 });
 
 app.post("/register", function (req, res) {
-  console.log(req);
-  res.send("POST request to the register");
+  console.log(req.body);
+  const { login, password } = req.body;
+  let isRegisteredAlready = false;
+  users.forEach((user) => {
+    if (user.login === login && user.password === password) {
+      isRegisteredAlready = true;
+    }
+  });
+
+  if (isRegisteredAlready) {
+    res.setHeader("Content-Type", "text/plain");
+    res.end(
+      JSON.stringify({ message: "Пользователь с таким логином уже существует" })
+    );
+    isRegisteredAlready = false;
+  } else {
+    res.send("POST request to the register");
+  }
 });
 
 app.listen(port, () => {

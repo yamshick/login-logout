@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "config": {
+    "dev_port": '8081'
+  },
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "lint": "eslint *.js ./src/**/*{js,jsx} --color --format stylish --fix",
     "build": "webpack --config webpack.prod.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "7.18.10",
     "@babel/eslint-parser": "7.19.1",

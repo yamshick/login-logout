@@ -1,21 +1,36 @@
 import { useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import styles from "./page.css";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useDispatch } from "react-redux";
-import { loginThunk } from "../store/reducers/auth-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { authSlice, loginThunk } from "../store/reducers/auth-slice";
+import { hashRoutes } from "../components/constants";
 
 export const Login = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuth } = useSelector((state) => state.authReducer);
+  const { setIsAuth, setUserName } = authSlice.actions;
+
+  if (isAuth) {
+    console.log("Login", { isAuth });
+    navigate(hashRoutes.PROFILE);
+  }
   const onLogin = async () => {
     setIsLoading(true);
     try {
-      await dispatch(loginThunk({ login, password })).unwrap();
+      const { name } = await dispatch(loginThunk({ login, password })).unwrap();
+      console.log(name);
       setLogin("");
       setPassword("");
+      dispatch(setIsAuth(true));
+      dispatch(setUserName(name));
+      navigate(hashRoutes.PROFILE);
     } catch (error) {
       console.log(error);
     } finally {
