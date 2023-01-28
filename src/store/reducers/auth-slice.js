@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LOGIN, REGISTER } from "../../api/constants";
 import { httpService } from "../../service/http-service";
+import { LOCAL_STORAGE_STATE_KEY } from "../../local-storage";
 
 const initialState = {
   isAuth: false,
@@ -10,27 +11,26 @@ const initialState = {
 export const loginThunk = createAsyncThunk(
   "auth/login",
   async ({ login, password }) => {
-    const response = await httpService.post(LOGIN, { login, password });
-    console.log(response);
-    return response;
+    const res = await httpService.post(LOGIN, { login, password });
+    console.log(res)
+    return res
   }
 );
 
 export const registerThunk = createAsyncThunk(
   "auth/register",
   async ({ name, login, password }) => {
-    const response = await httpService.post(REGISTER, {
+    return await httpService.post(REGISTER, {
       name,
       login,
       password,
     });
-    return response;
   }
 );
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: initialState,
+  initialState: JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY))?.authReducer || initialState,
   reducers: {
     setIsAuth(state, action) {
       state.isAuth = action.payload;
@@ -39,14 +39,15 @@ export const authSlice = createSlice({
       state.userName = action.payload;
     },
   },
-  extraReducers(builder) {
-    builder.addCase(loginThunk.fulfilled, (state, action) => {
-      console.log(action);
-    });
-    builder.addCase(registerThunk.fulfilled, (state, action) => {
-      console.log(action);
-    });
-  },
+  // extraReducers(builder) {
+  //   builder
+  //       .addCase(loginThunk.fulfilled, (state, action) => {
+  //         console.log(action)
+  //       })
+  //       .addCase(registerThunk.fulfilled, (state, action) => {
+  //         console.log(action)
+  //       });
+  // },
 });
 
 export const { reducer } = authSlice;

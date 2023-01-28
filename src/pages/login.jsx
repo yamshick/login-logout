@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import styles from "./page.css";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { authSlice, loginThunk } from "../store/reducers/auth-slice";
 import { hashRoutes } from "../components/constants";
-import { Profile } from "./profile";
 
 export const Login = () => {
   const [login, setLogin] = useState("");
@@ -16,13 +15,13 @@ export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const {isAuth} = useSelector(state => state.authReducer)
   const { setIsAuth, setUserName } = authSlice.actions;
 
   const onLogin = async () => {
     setIsLoading(true);
     try {
       const res = await dispatch(loginThunk({ login, password })).unwrap();
-      console.log(res);
       if (res.error) {
         setErrorMessage(res.error?.message);
         throw new Error(res.error?.message);
@@ -41,6 +40,8 @@ export const Login = () => {
   };
 
   const isLoginDisabled = ![login, password].every(Boolean);
+
+  if (isAuth) {return <Navigate to={hashRoutes.PROFILE} />}
   return (
     <div className={styles.formContainer}>
       {isLoading ? (
