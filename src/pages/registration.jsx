@@ -3,7 +3,9 @@ import styles from "./page.css";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { loginThunk, registerThunk } from "../store/reducers/auth-slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { hashRoutes } from "../components/constants";
 
 export const Registration = () => {
   const [name, setName] = useState("");
@@ -11,30 +13,48 @@ export const Registration = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { isAuth } = useSelector((state) => state.authReducer);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onRegister = async () => {
     setIsLoading(true);
     try {
-      await dispatch(registerThunk({ name, login, password })).unwrap();
+      const res = await dispatch(
+        registerThunk({ name, login, password })
+      ).unwrap();
+      if (res.error) {
+        setErrorMessage(res.error?.message);
+        throw new Error(res.error?.message);
+      }
       setName("");
       setLogin("");
       setPassword("");
       setPasswordConfirm("");
+      setIsRegistered(true);
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const onLogin = () => {
+    navigate(hashRoutes.LOGIN);
   };
 
   const isLoginDisabled = ![name, login, password, passwordConfirm].every(
     Boolean
   );
 
-  const shouldShowErrorMessage =
-    [password, passwordConfirm].every(Boolean) && password !== passwordConfirm;
+  const inputErrorMessage =
+    [password, passwordConfirm].every(Boolean) &&
+    password.substring(0, passwordConfirm.length) !== passwordConfirm &&
+    password !== passwordConfirm;
 
+  if (isAuth) return <Navigate to={hashRoutes.PROFILE} />;
   return (
     <div className={styles.formContainer}>
       {isLoading ? (
@@ -53,15 +73,25 @@ export const Registration = () => {
             type={"password"}
             placeholder={"Подтвердите пароль"}
           />
-          <div className={shouldShowErrorMessage}>
-            Введенные пароли не совпадают
-          </div>
-          <Button
-            disabled={isLoginDisabled || shouldShowErrorMessage}
-            onClick={onRegister}
+          <div
+            className={inputErrorMessage || errorMessage ? "" : styles.hider}
           >
-            Зарегистрироваться
-          </Button>
+            {inputErrorMessage && "Введенные пароли не совпадают"}
+            {errorMessage}
+          </div>
+          <div className={isRegistered ? "" : styles.hider}>
+            Регистрация прошла успешно
+          </div>
+          {isRegistered ? (
+            <Button onClick={onLogin}>Войти</Button>
+          ) : (
+            <Button
+              disabled={isLoginDisabled || inputErrorMessage}
+              onClick={onRegister}
+            >
+              Зарегистрироваться
+            </Button>
+          )}
         </>
       )}
     </div>

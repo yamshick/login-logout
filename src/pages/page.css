@@ -5,3 +5,7 @@
     align-items: center;
     height: 60vh;
 }
+
+.hider {
+    visibility: hidden;
+}

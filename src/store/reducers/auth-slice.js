@@ -24,7 +24,7 @@ export const registerThunk = createAsyncThunk(
       login,
       password,
     });
-    return response.data;
+    return response;
   }
 );
 

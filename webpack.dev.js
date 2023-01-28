@@ -12,6 +12,9 @@ module.exports = merge(common, {
     port: 3000,
     static: path.join(__dirname, "src"),
     historyApiFallback: true,
+    proxy: {
+      "/": "http://localhost:8081/",
+    },
   },
   devtool: "inline-source-map",
 });

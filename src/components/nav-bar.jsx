@@ -14,26 +14,28 @@ import { hashRoutes } from "./constants";
 export const NavBar = () => {
   return (
     <Router>
-      <nav className={styles.nav}>
-        {[
-          { name: "Главная", link: hashRoutes.ROOT },
-          { name: "Логин", link: hashRoutes.LOGIN },
-          { name: "Регистрация", link: hashRoutes.REGISTRATION },
-          { name: "Профиль", link: hashRoutes.PROFILE },
-        ].map(({ name, link }, idx) => (
-          <div key={idx}>
-            <div>
-              <NavLink to={link}>{name}</NavLink>
+      <>
+        <nav className={styles.nav}>
+          {[
+            { name: "Главная", link: hashRoutes.ROOT },
+            { name: "Логин", link: hashRoutes.LOGIN },
+            { name: "Регистрация", link: hashRoutes.REGISTRATION },
+            { name: "Профиль", link: hashRoutes.PROFILE },
+          ].map(({ name, link }, idx) => (
+            <div key={idx}>
+              <div>
+                <NavLink to={link}>{name}</NavLink>
+              </div>
             </div>
-          </div>
-        ))}
-      </nav>
-      <Routes>
-        <Route path="/" element={<Main />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/registration" element={<Registration />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-      </Routes>
+          ))}
+        </nav>
+        <Routes>
+          <Route path="/" element={<Main />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/registration" element={<Registration />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+        </Routes>
+      </>
     </Router>
   );
 };

@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 const users = require("./users.json");
 const app = express();
-const port = 3000;
+
+const port = process.env.PORT || 3000;
 
 app.use(express.static("dist"));
 app.use(bodyParser.json());
@@ -22,7 +24,12 @@ app.post("/login", function (req, res) {
     res.end(JSON.stringify({ name: isLoggedInUser.name }));
     isLoggedInUser = null;
   } else {
-    res.send("POST request to the login");
+    res.status(401);
+    res.send(
+      JSON.stringify({
+        error: { message: "Имя пользователя или пароль введены неверно" },
+      })
+    );
   }
 });
 
@@ -39,11 +46,13 @@ app.post("/register", function (req, res) {
   if (isRegisteredAlready) {
     res.setHeader("Content-Type", "text/plain");
     res.end(
-      JSON.stringify({ message: "Пользователь с таким логином уже существует" })
+      JSON.stringify({
+        error: { message: "Пользователь с таким логином уже зарегистрирован" },
+      })
     );
     isRegisteredAlready = false;
   } else {
-    res.send("POST request to the register");
+    res.send(JSON.stringify("Пользователь успешно создан"));
   }
 });
 
