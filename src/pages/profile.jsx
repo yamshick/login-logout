@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../components/constants";
 import { Button } from "../ui/button";
 import { authSlice } from "../store/reducers/auth-slice";
+import styles from "./page.css";
 
 export const Profile = () => {
   const { isAuth, userName } = useSelector((state) => state.authReducer);
@@ -17,10 +18,10 @@ export const Profile = () => {
   return (
     <>
       {isAuth ? (
-        <>
-          <div>{`Привет ${userName}!`}</div>
+        <div className={styles.formContainer}>
+          <div>{`Привет, ${userName}!`}</div>
           <Button onClick={onLogout}>Выйти</Button>
-        </>
+        </div>
       ) : (
         <Navigate to={hashRoutes.LOGIN} />
       )}
