@@ -43,10 +43,10 @@ app.post("/login", function (req, res) {
 
 app.post("/register", function (req, res) {
   console.log(req.body);
-  const { login, password } = req.body;
+  const { login } = req.body;
   let isRegisteredAlready = false;
   users.forEach((user) => {
-    if (user.login === login && user.password === password) {
+    if (user.login === login) {
       isRegisteredAlready = true;
     }
   });
