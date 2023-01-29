@@ -16,6 +16,8 @@ export const Registration = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isPasswordConfirmFailure, setIsPasswordConfirmFailure] =
+    useState(false);
   const { isAuth } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -37,7 +39,6 @@ export const Registration = () => {
         setErrorMessage(res.error?.message);
         throw new Error(res.error?.message);
       }
-      console.log("---------------------");
       setName("");
       setLogin("");
       setPassword("");
@@ -54,6 +55,30 @@ export const Registration = () => {
     navigate(hashRoutes.LOGIN);
   };
 
+  const onPasswordConfirmBlur = () => {
+    if (password && passwordConfirm && password !== passwordConfirm) {
+      setIsPasswordConfirmFailure(true);
+    }
+  };
+
+  const onPasswordBlur = () => {
+    if (password && passwordConfirm && password !== passwordConfirm) {
+      setIsPasswordConfirmFailure(true);
+    }
+  };
+
+  useEffect(() => {
+    if (password && passwordConfirm && password === passwordConfirm) {
+      setIsPasswordConfirmFailure(false);
+    }
+  }, [passwordConfirm]);
+
+  useEffect(() => {
+    if (password && passwordConfirm && password === passwordConfirm) {
+      setIsPasswordConfirmFailure(false);
+    }
+  }, [password]);
+
   const isRegisterButtonDisabled = ![
     name,
     login,
@@ -61,10 +86,10 @@ export const Registration = () => {
     passwordConfirm,
   ].every(Boolean);
 
-  const inputErrorMessage =
-    [password, passwordConfirm].every(Boolean) &&
-    // password.substring(0, passwordConfirm.length) !== passwordConfirm &&
-    password !== passwordConfirm;
+  // const isPasswordConfirmFailure =
+  //   [password, passwordConfirm].every(Boolean) &&
+  //   // password.substring(0, passwordConfirm.length) !== passwordConfirm &&
+  //   password !== passwordConfirm;
 
   if (isAuth) return <Navigate to={hashRoutes.PROFILE} />;
   return (
@@ -90,16 +115,18 @@ export const Registration = () => {
             onChange={setPassword}
             type={"password"}
             placeholder={"Пароль"}
+            onBlur={onPasswordBlur}
           />
           <Input
             value={passwordConfirm}
             onChange={setPasswordConfirm}
             type={"password"}
             placeholder={"Подтвердите пароль"}
+            onBlur={onPasswordConfirmBlur}
           />
           <div className={errorMessage ? "" : styles.hider}>{errorMessage}</div>
-          <div className={inputErrorMessage ? "" : styles.hider}>
-            {inputErrorMessage && "Введенные пароли не совпадают"}
+          <div className={isPasswordConfirmFailure ? "" : styles.hider}>
+            {isPasswordConfirmFailure && "Введенные пароли не совпадают"}
           </div>
           <div className={isRegistered ? "" : styles.hider}>
             Регистрация прошла успешно
@@ -108,7 +135,7 @@ export const Registration = () => {
             <Button onClick={onLogin}>Войти</Button>
           ) : (
             <Button
-              disabled={isRegisterButtonDisabled || inputErrorMessage}
+              disabled={isRegisterButtonDisabled || isPasswordConfirmFailure}
               onClick={onRegister}
             >
               Зарегистрироваться

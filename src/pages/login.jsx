@@ -47,7 +47,7 @@ export const Login = () => {
   }
   return (
     <div className={styles.formContainer}>
-      {isLoading? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <>
