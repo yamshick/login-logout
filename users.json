@@ -2,4 +2,25 @@
   "name": "John Doe",
   "login": "johnDoe",
   "password": "qwerty"
-}]
+},
+  {
+    "name": "Jospeh Langworth",
+    "login": "jospeh.langworth",
+    "password": "qwerty"
+  },
+  {
+    "name": "Norbert Fritsch",
+    "login": "norbert.fritsch",
+    "password": "i5BMVnw2tv"
+  },
+  {
+    "name": "Daren Buckridge",
+    "login": "daren.buckridge",
+    "password": "VMgQxFZCpD"
+  },
+  {
+    "name": "Antonetta O'Hara",
+    "login": "antonetta.o'hara",
+    "password": "GThH4EsNYc"
+  }
+]
