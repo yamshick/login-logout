@@ -86,17 +86,17 @@ export const Registration = () => {
     passwordConfirm,
   ].every(Boolean);
 
-  // const isPasswordConfirmFailure =
-  //   [password, passwordConfirm].every(Boolean) &&
-  //   // password.substring(0, passwordConfirm.length) !== passwordConfirm &&
-  //   password !== passwordConfirm;
-
   if (isAuth) return <Navigate to={hashRoutes.PROFILE} />;
+  if (isLoading)
+    return (
+      <div className={styles.formContainer}>
+        <Spinner />
+      </div>
+    );
+
   return (
     <div className={styles.formContainer}>
-      {isLoading ? (
-        <Spinner />
-      ) : (
+      {!isRegistered ? (
         <>
           <Input
             value={name}
@@ -126,21 +126,19 @@ export const Registration = () => {
           />
           <div className={errorMessage ? "" : styles.hider}>{errorMessage}</div>
           <div className={isPasswordConfirmFailure ? "" : styles.hider}>
-            {isPasswordConfirmFailure && "Введенные пароли не совпадают"}
+            Введенные пароли не совпадают
           </div>
-          <div className={isRegistered ? "" : styles.hider}>
-            Регистрация прошла успешно
-          </div>
-          {isRegistered ? (
-            <Button onClick={onLogin}>Войти</Button>
-          ) : (
-            <Button
-              disabled={isRegisterButtonDisabled || isPasswordConfirmFailure}
-              onClick={onRegister}
-            >
-              Зарегистрироваться
-            </Button>
-          )}
+          <Button
+            disabled={isRegisterButtonDisabled || isPasswordConfirmFailure}
+            onClick={onRegister}
+          >
+            Зарегистрироваться
+          </Button>
+        </>
+      ) : (
+        <>
+          <div className={styles.textMessage}>Регистрация прошла успешно</div>
+          <Button onClick={onLogin}>Войти</Button>
         </>
       )}
     </div>

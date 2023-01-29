@@ -19,7 +19,7 @@ export const Profile = () => {
     <>
       {isAuth ? (
         <div className={styles.formContainer}>
-          <div>{`Привет, ${userName}!`}</div>
+          <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           <Button onClick={onLogout}>Выйти</Button>
         </div>
       ) : (

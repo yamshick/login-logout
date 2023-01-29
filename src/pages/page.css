@@ -9,3 +9,7 @@
 .hider {
     visibility: hidden;
 }
+
+.textMessage {
+    margin-bottom: 20px;
+}
