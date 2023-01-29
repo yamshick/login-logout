@@ -1,11 +1,11 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "./page.css";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { loginThunk, registerThunk } from "../store/reducers/auth-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import { hashRoutes } from "../components/constants";
+import { hashRoutes } from "../constants";
 
 export const Registration = () => {
   const [name, setName] = useState("");
@@ -17,8 +17,13 @@ export const Registration = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { isAuth } = useSelector((state) => state.authReducer);
 
+  useEffect(() => {
+    if (!login) {setErrorMessage('')}
+  }, [login])
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const onRegister = async () => {
     setIsLoading(true);
     try {
@@ -29,6 +34,7 @@ export const Registration = () => {
         setErrorMessage(res.error?.message);
         throw new Error(res.error?.message);
       }
+      console.log('---------------------')
       setName("");
       setLogin("");
       setPassword("");
@@ -45,13 +51,13 @@ export const Registration = () => {
     navigate(hashRoutes.LOGIN);
   };
 
-  const isLoginDisabled = ![name, login, password, passwordConfirm].every(
+  const isRegisterButtonDisabled = ![name, login, password, passwordConfirm].every(
     Boolean
   );
 
   const inputErrorMessage =
     [password, passwordConfirm].every(Boolean) &&
-    password.substring(0, passwordConfirm.length) !== passwordConfirm &&
+    // password.substring(0, passwordConfirm.length) !== passwordConfirm &&
     password !== passwordConfirm;
 
   if (isAuth) return <Navigate to={hashRoutes.PROFILE} />;
@@ -61,23 +67,29 @@ export const Registration = () => {
         <div>LOADING</div>
       ) : (
         <>
-          <Input onChange={setName} type={"text"} placeholder={"Имя"} />
-          <Input onChange={setLogin} type={"text"} placeholder={"Логин"} />
+          <Input value={name} onChange={setName} type={"text"} placeholder={"Имя"} />
+          <Input value={login} onChange={setLogin} type={"text"} placeholder={"Логин"} />
           <Input
+              value={password}
             onChange={setPassword}
             type={"password"}
             placeholder={"Пароль"}
           />
           <Input
+              value={passwordConfirm}
             onChange={setPasswordConfirm}
             type={"password"}
             placeholder={"Подтвердите пароль"}
           />
           <div
-            className={inputErrorMessage || errorMessage ? "" : styles.hider}
+            className={errorMessage ? "" : styles.hider}
+          >
+            {errorMessage}
+          </div>
+          <div
+              className={inputErrorMessage ? "" : styles.hider}
           >
             {inputErrorMessage && "Введенные пароли не совпадают"}
-            {errorMessage}
           </div>
           <div className={isRegistered ? "" : styles.hider}>
             Регистрация прошла успешно
@@ -86,7 +98,7 @@ export const Registration = () => {
             <Button onClick={onLogin}>Войти</Button>
           ) : (
             <Button
-              disabled={isLoginDisabled || inputErrorMessage}
+              disabled={isRegisterButtonDisabled || inputErrorMessage}
               onClick={onRegister}
             >
               Зарегистрироваться

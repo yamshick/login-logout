@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { authSlice, loginThunk } from "../store/reducers/auth-slice";
-import { hashRoutes } from "../components/constants";
+import { hashRoutes } from "../constants";
 
 export const Login = () => {
   const [login, setLogin] = useState("");
@@ -50,8 +50,9 @@ export const Login = () => {
         <div>LOADING</div>
       ) : (
         <>
-          <Input onChange={setLogin} type={"text"} placeholder={"Логин"} />
+          <Input value={login} onChange={setLogin} type={"text"} placeholder={"Логин"} />
           <Input
+              value={password}
             onChange={setPassword}
             type={"password"}
             placeholder={"Пароль"}

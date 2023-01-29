@@ -9,7 +9,7 @@ import { Login } from "../pages/login";
 import { Registration } from "../pages/registration";
 import { Profile } from "../pages/profile";
 import styles from "./nav-bar.css";
-import { hashRoutes } from "./constants";
+import { hashRoutes } from "../constants";
 
 export const NavBar = () => {
   return (

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import { hashRoutes } from "../components/constants";
+import { hashRoutes } from "../constants";
 import { Button } from "../ui/button";
 import { authSlice } from "../store/reducers/auth-slice";
 import styles from "./page.css";
