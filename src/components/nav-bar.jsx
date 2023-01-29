@@ -17,15 +17,15 @@ export const NavBar = () => {
       <>
         <nav className={styles.nav}>
           {[
-            { name: "Главная", link: hashRoutes.ROOT },
-            { name: "Логин", link: hashRoutes.LOGIN },
-            { name: "Регистрация", link: hashRoutes.REGISTRATION },
-            { name: "Профиль", link: hashRoutes.PROFILE },
-          ].map(({ name, link }, idx) => (
-            <div key={idx}>
-              <div>
-                <NavLink to={link}>{name}</NavLink>
-              </div>
+            { name: "Главная", link: hashRoutes.ROOT, id: 1 },
+            { name: "Логин", link: hashRoutes.LOGIN, id: 2 },
+            { name: "Регистрация", link: hashRoutes.REGISTRATION, id: 3 },
+            { name: "Профиль", link: hashRoutes.PROFILE, id: 4 },
+          ].map(({ name, link, id }) => (
+            <div key={id}>
+              <NavLink className={styles.navLink} to={link}>
+                {name}
+              </NavLink>
             </div>
           ))}
         </nav>
