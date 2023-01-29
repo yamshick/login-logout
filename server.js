@@ -7,7 +7,7 @@ const app = express();
 
 const port = process.env.PORT || 80;
 
-// app.use(express.static("dist"));
+app.use(express.static("dist"));
 app.use(bodyParser.json());
 
 app.get("/*", (req, res) => {
