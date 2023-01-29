@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { authSlice, loginThunk } from "../store/reducers/auth-slice";
 import { hashRoutes } from "../constants";
+import { Spinner } from "../ui/spinner";
 
 export const Login = () => {
   const [login, setLogin] = useState("");
@@ -46,13 +47,18 @@ export const Login = () => {
   }
   return (
     <div className={styles.formContainer}>
-      {isLoading ? (
-        <div>LOADING</div>
+      {isLoading? (
+        <Spinner />
       ) : (
         <>
-          <Input value={login} onChange={setLogin} type={"text"} placeholder={"Логин"} />
           <Input
-              value={password}
+            value={login}
+            onChange={setLogin}
+            type={"text"}
+            placeholder={"Логин"}
+          />
+          <Input
+            value={password}
             onChange={setPassword}
             type={"password"}
             placeholder={"Пароль"}

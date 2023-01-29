@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.css";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -6,6 +6,7 @@ import { loginThunk, registerThunk } from "../store/reducers/auth-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../constants";
+import { Spinner } from "../ui/spinner";
 
 export const Registration = () => {
   const [name, setName] = useState("");
@@ -18,8 +19,10 @@ export const Registration = () => {
   const { isAuth } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
-    if (!login) {setErrorMessage('')}
-  }, [login])
+    if (!login) {
+      setErrorMessage("");
+    }
+  }, [login]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ export const Registration = () => {
         setErrorMessage(res.error?.message);
         throw new Error(res.error?.message);
       }
-      console.log('---------------------')
+      console.log("---------------------");
       setName("");
       setLogin("");
       setPassword("");
@@ -51,9 +54,12 @@ export const Registration = () => {
     navigate(hashRoutes.LOGIN);
   };
 
-  const isRegisterButtonDisabled = ![name, login, password, passwordConfirm].every(
-    Boolean
-  );
+  const isRegisterButtonDisabled = ![
+    name,
+    login,
+    password,
+    passwordConfirm,
+  ].every(Boolean);
 
   const inputErrorMessage =
     [password, passwordConfirm].every(Boolean) &&
@@ -64,31 +70,35 @@ export const Registration = () => {
   return (
     <div className={styles.formContainer}>
       {isLoading ? (
-        <div>LOADING</div>
+        <Spinner />
       ) : (
         <>
-          <Input value={name} onChange={setName} type={"text"} placeholder={"Имя"} />
-          <Input value={login} onChange={setLogin} type={"text"} placeholder={"Логин"} />
           <Input
-              value={password}
+            value={name}
+            onChange={setName}
+            type={"text"}
+            placeholder={"Имя"}
+          />
+          <Input
+            value={login}
+            onChange={setLogin}
+            type={"text"}
+            placeholder={"Логин"}
+          />
+          <Input
+            value={password}
             onChange={setPassword}
             type={"password"}
             placeholder={"Пароль"}
           />
           <Input
-              value={passwordConfirm}
+            value={passwordConfirm}
             onChange={setPasswordConfirm}
             type={"password"}
             placeholder={"Подтвердите пароль"}
           />
-          <div
-            className={errorMessage ? "" : styles.hider}
-          >
-            {errorMessage}
-          </div>
-          <div
-              className={inputErrorMessage ? "" : styles.hider}
-          >
+          <div className={errorMessage ? "" : styles.hider}>{errorMessage}</div>
+          <div className={inputErrorMessage ? "" : styles.hider}>
             {inputErrorMessage && "Введенные пароли не совпадают"}
           </div>
           <div className={isRegistered ? "" : styles.hider}>
