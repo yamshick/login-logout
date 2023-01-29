@@ -1,14 +1,26 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../components/constants";
+import { Button } from "../ui/button";
+import { authSlice } from "../store/reducers/auth-slice";
 
 export const Profile = () => {
   const { isAuth, userName } = useSelector((state) => state.authReducer);
-
+  const { setUserName, setIsAuth } = authSlice.actions;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onLogout = () => {
+    dispatch(setIsAuth(false));
+    dispatch(setUserName(null));
+    navigate(hashRoutes.LOGIN);
+  };
   return (
     <>
       {isAuth ? (
-        <div>{`Hello ${userName}!`}</div>
+        <>
+          <div>{`Привет ${userName}!`}</div>
+          <Button onClick={onLogout}>Выйти</Button>
+        </>
       ) : (
         <Navigate to={hashRoutes.LOGIN} />
       )}

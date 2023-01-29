@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Navigate, useNavigate} from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import styles from "./page.css";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -15,7 +15,7 @@ export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {isAuth} = useSelector(state => state.authReducer)
+  const { isAuth } = useSelector((state) => state.authReducer);
   const { setIsAuth, setUserName } = authSlice.actions;
 
   const onLogin = async () => {
@@ -41,7 +41,9 @@ export const Login = () => {
 
   const isLoginDisabled = ![login, password].every(Boolean);
 
-  if (isAuth) {return <Navigate to={hashRoutes.PROFILE} />}
+  if (isAuth) {
+    return <Navigate to={hashRoutes.PROFILE} />;
+  }
   return (
     <div className={styles.formContainer}>
       {isLoading ? (

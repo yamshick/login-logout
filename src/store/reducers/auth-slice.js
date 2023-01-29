@@ -12,8 +12,8 @@ export const loginThunk = createAsyncThunk(
   "auth/login",
   async ({ login, password }) => {
     const res = await httpService.post(LOGIN, { login, password });
-    console.log(res)
-    return res
+    console.log(res);
+    return res;
   }
 );
 
@@ -30,7 +30,9 @@ export const registerThunk = createAsyncThunk(
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY))?.authReducer || initialState,
+  initialState:
+    JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY))?.authReducer ||
+    initialState,
   reducers: {
     setIsAuth(state, action) {
       state.isAuth = action.payload;

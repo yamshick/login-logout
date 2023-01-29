@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
@@ -10,13 +10,13 @@ const port = process.env.PORT || 3000;
 // app.use(express.static("dist"));
 app.use(bodyParser.json());
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'), function(err) {
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist/index.html"), function (err) {
     if (err) {
-      res.status(500).send(err)
+      res.status(500).send(err);
     }
-  })
-})
+  });
+});
 app.post("/login", function (req, res) {
   console.log(req.body);
   const { login, password } = req.body;
