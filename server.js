@@ -5,7 +5,7 @@ require("dotenv").config();
 const users = require("./users.json");
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 
 // app.use(express.static("dist"));
 app.use(bodyParser.json());
